@@ -10,6 +10,9 @@ export async function connectDB() {
     throw new Error("MONGO_URI is required");
   }
 
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, {
+    serverSelectionTimeoutMS: 5000,
+    connectTimeoutMS: 5000
+  });
   isConnected = true;
 }

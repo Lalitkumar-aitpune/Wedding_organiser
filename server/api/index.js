@@ -15,6 +15,9 @@ async function bootstrap() {
 }
 
 export default async function handler(req, res) {
+  if (req.url?.startsWith("/api/health")) {
+    return serverless(app)(req, res);
+  }
   await bootstrap();
   return serverless(app)(req, res);
 }
