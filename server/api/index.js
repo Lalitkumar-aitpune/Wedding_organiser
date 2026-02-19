@@ -1,12 +1,10 @@
 import dotenv from "dotenv";
-import serverless from "serverless-http";
 import app from "../app.js";
 import { connectDB, isDBConnected } from "../config/db.js";
 
 dotenv.config();
 
 let dbReady;
-const appHandler = serverless(app);
 
 async function bootstrap() {
   if (!dbReady) {
@@ -35,13 +33,7 @@ export default async function handler(req, res) {
     if (!isDBConnected()) {
       throw new Error("Database not connected");
     }
-
-    await Promise.race([
-      appHandler(req, res),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Request handling timeout")), 12000)
-      )
-    ]);
+    return app(req, res);
   } catch (error) {
     console.error("API bootstrap failed:", error.message);
     if (res.headersSent) return;
