@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import serverless from "serverless-http";
 import app from "../app.js";
-import { connectDB } from "../config/db.js";
+import { connectDB, isDBConnected } from "../config/db.js";
 
 dotenv.config();
 
@@ -31,14 +31,26 @@ export default async function handler(req, res) {
         setTimeout(() => reject(new Error("Database bootstrap timeout")), 7000)
       )
     ]);
-    return appHandler(req, res);
+
+    if (!isDBConnected()) {
+      throw new Error("Database not connected");
+    }
+
+    await Promise.race([
+      appHandler(req, res),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Request handling timeout")), 12000)
+      )
+    ]);
   } catch (error) {
     console.error("API bootstrap failed:", error.message);
+    if (res.headersSent) return;
     res.statusCode = 503;
     res.setHeader("Content-Type", "application/json");
     res.end(
       JSON.stringify({
-        message: "Service unavailable. Please check database connectivity."
+        message: "Service unavailable. Please check database connectivity.",
+        detail: error.message
       })
     );
   }
