@@ -6,6 +6,7 @@ import { connectDB } from "../config/db.js";
 dotenv.config();
 
 let dbReady;
+const appHandler = serverless(app);
 
 async function bootstrap() {
   if (!dbReady) {
@@ -15,9 +16,30 @@ async function bootstrap() {
 }
 
 export default async function handler(req, res) {
-  if (req.url?.startsWith("/api/health")) {
-    return serverless(app)(req, res);
+  const url = req.url || "";
+  if (url.startsWith("/api/health") || url === "/health") {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ status: "ok" }));
+    return;
   }
-  await bootstrap();
-  return serverless(app)(req, res);
+
+  try {
+    await Promise.race([
+      bootstrap(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Database bootstrap timeout")), 7000)
+      )
+    ]);
+    return appHandler(req, res);
+  } catch (error) {
+    console.error("API bootstrap failed:", error.message);
+    res.statusCode = 503;
+    res.setHeader("Content-Type", "application/json");
+    res.end(
+      JSON.stringify({
+        message: "Service unavailable. Please check database connectivity."
+      })
+    );
+  }
 }
