@@ -13,8 +13,10 @@ app.use(
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       const allowedFromEnv = process.env.CLIENT_URL;
+      const normalizedEnv = allowedFromEnv?.replace(/\/$/, "");
       const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-      if (!allowedFromEnv || origin === allowedFromEnv || isLocalhost) {
+      const isVercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+      if (!allowedFromEnv || origin === normalizedEnv || isLocalhost || isVercelPreview) {
         return callback(null, true);
       }
       return callback(new Error("CORS blocked for this origin"));
