@@ -5,6 +5,7 @@ const navItems = [
   { label: "Create Event", to: "/create-event" },
   { label: "Result", to: "/result" },
   { label: "Shop Dashboard", to: "/shop-dashboard" },
+  { label: "Admin Login", to: "/admin-login" },
   { label: "Admin", to: "/admin" }
 ];
 
@@ -13,9 +14,14 @@ function Layout({ children }) {
 
   return (
     <div className="app-shell">
+      <div className="ambient ambient-one" />
+      <div className="ambient ambient-two" />
       <header className="topbar">
-        <h1>Wedding Raw Material Aggregator</h1>
-        <nav>
+        <div className="brand-block">
+          <span className="brand-kicker">Wedding Ops Studio</span>
+          <h1>Wedding Raw Material Aggregator</h1>
+        </div>
+        <nav className="topnav">
           {navItems.map((item) => (
             <Link
               key={item.to}

@@ -45,10 +45,13 @@ function ShopDashboardPage() {
     setLoading(true);
     try {
       const { data } = await loginShop({ email: authForm.email, password: authForm.password });
+      if (data.user?.role !== "shop") {
+        throw new Error("This account is not a shop account");
+      }
       loginShopUser(data.user, data.token);
       alert("Logged in");
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed");
+      alert(error.response?.data?.message || error.message || "Login failed");
     } finally {
       setLoading(false);
     }

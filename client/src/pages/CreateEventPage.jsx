@@ -57,68 +57,82 @@ function CreateEventPage() {
   };
 
   return (
-    <Card title="Create Event">
-      <form className="form-grid" onSubmit={onSubmit}>
-        <label>
-          Number of guests
-          <input
-            type="number"
-            min="1"
-            name="guests"
-            value={form.guests}
-            onChange={onChange}
-            required
-          />
-        </label>
+    <div className="page-stack">
+      <section className="page-intro">
+        <span className="section-kicker">Event brief builder</span>
+        <h2>Create a sourcing-ready wedding event in one pass.</h2>
+        <p>
+          Add headcount, menu mix, schedule, and delivery location. The platform will calculate raw
+          material demand and compare shop totals for you.
+        </p>
+      </section>
 
-        <label>
-          Veg / Non-Veg
-          <select name="preference" value={form.preference} onChange={onChange}>
-            <option value="veg">Veg</option>
-            <option value="non-veg">Non-Veg</option>
-          </select>
-        </label>
+      <Card title="Create Event">
+        <form className="form-grid event-form" onSubmit={onSubmit}>
+          <label>
+            Number of guests
+            <input
+              type="number"
+              min="1"
+              name="guests"
+              value={form.guests}
+              onChange={onChange}
+              required
+            />
+          </label>
 
-        <label>
-          Select menu items
-          <select
-            multiple
-            name="menuItems"
-            value={form.menuItems}
-            onChange={onMenuChange}
-            required
-            size={5}
-          >
-            {MENU_OPTIONS.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </label>
+          <label>
+            Veg / Non-Veg
+            <select name="preference" value={form.preference} onChange={onChange}>
+              <option value="veg">Veg</option>
+              <option value="non-veg">Non-Veg</option>
+            </select>
+          </label>
 
-        <label>
-          Event date
-          <input type="date" name="eventDate" value={form.eventDate} onChange={onChange} required />
-        </label>
+          <label>
+            Select menu items
+            <select
+              multiple
+              name="menuItems"
+              value={form.menuItems}
+              onChange={onMenuChange}
+              required
+              size={5}
+            >
+              {MENU_OPTIONS.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </label>
 
-        <label className="full-width">
-          Delivery address
-          <textarea
-            rows={3}
-            name="deliveryAddress"
-            value={form.deliveryAddress}
-            onChange={onChange}
-            required
-          />
-        </label>
+          <label>
+            Event date
+            <input type="date" name="eventDate" value={form.eventDate} onChange={onChange} required />
+          </label>
 
-        <button type="submit" className="btn primary" disabled={loading}>
-          {loading ? "Calculating..." : "Submit Event"}
-        </button>
-      </form>
-      {loading ? <Loader /> : null}
-    </Card>
+          <label className="full-width">
+            Delivery address
+            <textarea
+              rows={3}
+              name="deliveryAddress"
+              value={form.deliveryAddress}
+              onChange={onChange}
+              required
+            />
+          </label>
+
+          <div className="form-footer full-width">
+            <p className="muted-copy">Multi-select the dishes you want included in the production estimate.</p>
+            <button type="submit" className="btn primary" disabled={loading}>
+              {loading ? "Calculating..." : "Generate Comparison"}
+            </button>
+          </div>
+        </form>
+        {loading ? <Loader /> : null}
+      </Card>
+    </div>
   );
 }
 

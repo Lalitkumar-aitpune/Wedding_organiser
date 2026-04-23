@@ -5,6 +5,8 @@ import CreateEventPage from "./pages/CreateEventPage";
 import ResultPage from "./pages/ResultPage";
 import ShopDashboardPage from "./pages/ShopDashboardPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   return (
@@ -14,7 +16,15 @@ function App() {
         <Route path="/create-event" element={<CreateEventPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/shop-dashboard" element={<ShopDashboardPage />} />
-        <Route path="/admin" element={<AdminPanelPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminPanelPage />
+            </AdminRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

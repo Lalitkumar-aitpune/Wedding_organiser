@@ -8,17 +8,35 @@ export function AppProvider({ children }) {
     const raw = localStorage.getItem("shopUser");
     return raw ? JSON.parse(raw) : null;
   });
+  const [adminUser, setAdminUser] = useState(() => {
+    const raw = localStorage.getItem("adminUser");
+    return raw ? JSON.parse(raw) : null;
+  });
 
   const loginShopUser = (user, token) => {
     localStorage.setItem("shopUser", JSON.stringify(user));
     localStorage.setItem("shopToken", token);
+    localStorage.setItem("authToken", token);
     setShopUser(user);
   };
 
   const logoutShopUser = () => {
     localStorage.removeItem("shopUser");
     localStorage.removeItem("shopToken");
+    localStorage.removeItem("authToken");
     setShopUser(null);
+  };
+
+  const loginAdminUser = (user, token) => {
+    localStorage.setItem("adminUser", JSON.stringify(user));
+    localStorage.setItem("authToken", token);
+    setAdminUser(user);
+  };
+
+  const logoutAdminUser = () => {
+    localStorage.removeItem("adminUser");
+    localStorage.removeItem("authToken");
+    setAdminUser(null);
   };
 
   const value = useMemo(
@@ -27,9 +45,12 @@ export function AppProvider({ children }) {
       setCalculationResult,
       shopUser,
       loginShopUser,
-      logoutShopUser
+      logoutShopUser,
+      adminUser,
+      loginAdminUser,
+      logoutAdminUser
     }),
-    [calculationResult, shopUser]
+    [calculationResult, shopUser, adminUser]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
