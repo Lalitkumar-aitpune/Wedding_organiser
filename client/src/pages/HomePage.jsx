@@ -13,10 +13,13 @@ function HomePage() {
             your event sourcing organized from estimate to order.
           </p>
           <div className="cta-row">
+            <Link to="/user-auth" className="btn secondary">
+              Customer Login
+            </Link>
             <Link to="/create-event" className="btn primary">
               Start Event Planning
             </Link>
-            <Link to="/shop-dashboard" className="btn secondary">
+            <Link to="/shop-dashboard" className="btn ghost">
               Enter Shop Dashboard
             </Link>
           </div>

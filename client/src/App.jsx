@@ -6,6 +6,7 @@ import ResultPage from "./pages/ResultPage";
 import ShopDashboardPage from "./pages/ShopDashboardPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
+import UserAuthPage from "./pages/UserAuthPage";
 import AdminRoute from "./components/AdminRoute";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/user-auth" element={<UserAuthPage />} />
         <Route path="/create-event" element={<CreateEventPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/shop-dashboard" element={<ShopDashboardPage />} />

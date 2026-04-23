@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
   { label: "Home", to: "/" },
+  { label: "User Login", to: "/user-auth" },
   { label: "Create Event", to: "/create-event" },
   { label: "Result", to: "/result" },
   { label: "Shop Dashboard", to: "/shop-dashboard" },

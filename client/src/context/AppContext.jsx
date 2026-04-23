@@ -4,6 +4,10 @@ const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   const [calculationResult, setCalculationResult] = useState(null);
+  const [userAccount, setUserAccount] = useState(() => {
+    const raw = localStorage.getItem("userAccount");
+    return raw ? JSON.parse(raw) : null;
+  });
   const [shopUser, setShopUser] = useState(() => {
     const raw = localStorage.getItem("shopUser");
     return raw ? JSON.parse(raw) : null;
@@ -12,6 +16,18 @@ export function AppProvider({ children }) {
     const raw = localStorage.getItem("adminUser");
     return raw ? JSON.parse(raw) : null;
   });
+
+  const loginUserAccount = (user, token) => {
+    localStorage.setItem("userAccount", JSON.stringify(user));
+    localStorage.setItem("authToken", token);
+    setUserAccount(user);
+  };
+
+  const logoutUserAccount = () => {
+    localStorage.removeItem("userAccount");
+    localStorage.removeItem("authToken");
+    setUserAccount(null);
+  };
 
   const loginShopUser = (user, token) => {
     localStorage.setItem("shopUser", JSON.stringify(user));
@@ -43,6 +59,9 @@ export function AppProvider({ children }) {
     () => ({
       calculationResult,
       setCalculationResult,
+      userAccount,
+      loginUserAccount,
+      logoutUserAccount,
       shopUser,
       loginShopUser,
       logoutShopUser,
@@ -50,7 +69,7 @@ export function AppProvider({ children }) {
       loginAdminUser,
       logoutAdminUser
     }),
-    [calculationResult, shopUser, adminUser]
+    [calculationResult, userAccount, shopUser, adminUser]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
